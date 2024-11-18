@@ -285,21 +285,30 @@ class Cli {
           choices: this.vehicles.map((vehicle) => {
             return {
               name: `${vehicle.vin} -- ${vehicle.make} ${vehicle.model}`,
-              value: vehicle,
+              value: vehicle.vin,
             };
           }),
         },
       ])
       .then((answers) => {
         //check if the selected vehicle is the truck
-        const selectedVehicle = answers.vehicleToTow;
-        if (selectedVehicle.vin === truck.vin) {
-          console.log(`${truck} cannot tow itself`)
-          this.performActions()
-        } else {
-          truck.tow(selectedVehicle)
-          this.performActions()
+        const selectedVehicleVin = answers.vehicleToTow; 
+        const selectedVehicle = this.vehicles.find(
+          (vehicle) => vehicle.vin === selectedVehicleVin
+        );
+  
+        if (!selectedVehicle) {
+          console.log(`Vehicle not found.`);
+          return;
         }
+  
+        if (selectedVehicle.vin === truck.vin) {
+          console.log(`${truck.make} cannot tow itself.`);
+        } else {
+          truck.tow(selectedVehicle);
+          console.log(`${truck.make} is now towing ${selectedVehicle.make} ${selectedVehicle.model}`);
+        }
+
       });
   }
 
@@ -392,10 +401,10 @@ class Cli {
 
           if (selectedVehicle instanceof Truck) {
             this.findVehicleToTow(selectedVehicle);
-            this.performActions();
+            return;
           } else {
             console.log(`Only a truck can tow.`);
-            this.performActions();
+
           }
         } 
         //add statements to perform the wheelie action only if the selected vehicle is a motorbike
@@ -404,10 +413,9 @@ class Cli {
 
           if (selectedVehicle instanceof Motorbike) {
             selectedVehicle.wheelie();
-            this.performActions();
+            return;
           } else {
             console.log(`Only a motorbike can perform a wheelie.`);
-            this.performActions();
           }
         } else if (answers.action === 'Select or create another vehicle') {
           // start the cli to return to the initial prompt if the user wants to select or create another vehicle
