@@ -18,7 +18,9 @@ To install this project run npm install.
 
 ## Usage
 To use this application, run npm run build followed by npm start in the command line.
-
+[Demo Video](./videos/Demo%20Video%20-%20Vehicle%20Builder.mp4)
+[Demo Video: Tow](./videos/Demo%20-%20Tow.mp4)
+[Demo Video: Wheelie](./videos/Demo-Wheelie.mp4)
 
 ## License
 This project is licensed under the MIT license.  
